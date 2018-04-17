@@ -4,7 +4,8 @@ import './App.css';
 
 class App extends Component {
   state = {
-    persons: null,
+    pages: [],
+    page: 0,
   };
 
   async componentWillMount() {
@@ -14,29 +15,53 @@ class App extends Component {
         throw new Error(response.status);
       }
       const jsonResponse = await response.json();
-      console.log(jsonResponse);
-      this.setState({ persons: jsonResponse.results });
+      // console.log(jsonResponse);
+      this.setState({ pages: this.state.pages.concat(jsonResponse) });
     } catch (err) {
       console.log(err);
     }
   }
 
+  handleNext = async () => {
+    if (this.state.pages[this.state.page + 1] !== undefined) {
+      this.setState({ page: this.state.page + 1 });
+    } else {
+      const currentPage = this.state.pages[this.state.page];
+      try {
+        const response = await fetch(currentPage.next);
+        if (!response.ok) {
+          throw new Error(response.status);
+        }
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
+        this.setState({ pages: this.state.pages.concat(jsonResponse), page: this.state.page + 1 });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  handleBack = () => {
+    if (this.state.pages[this.state.page - 1] !== undefined) {
+      this.setState({ page: this.state.page - 1 });
+    }
+  };
+
   render() {
-    if (!this.state.persons) {
+    if (this.state.pages.length < 1) {
       return <p>Loading...</p>;
     }
+    const currentPage = this.state.pages[this.state.page];
+    console.log(currentPage);
     return (
       <div>
-        {this.state.persons.map(person => {
+        {currentPage.results.map(person => {
           return <Character key={person.name} name={person.name} birthday={person.birth_year} />;
         })}
+        <button onClick={this.handleBack}>Back</button>
+        <button onClick={this.handleNext}>Next</button>
       </div>
     );
-    // return (
-    //   <div className="App">
-    //     {people}
-    //   </div>
-    // );
   }
 }
 
