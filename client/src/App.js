@@ -8,7 +8,7 @@ class App extends Component {
     page: 0,
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     try {
       const response = await fetch('https://swapi.co/api/people/');
       if (!response.ok) {
@@ -34,7 +34,9 @@ class App extends Component {
         }
         const jsonResponse = await response.json();
         console.log(jsonResponse);
-        this.setState({ pages: this.state.pages.concat(jsonResponse), page: this.state.page + 1 });
+        this.setState(prevState => {
+          return { pages: this.state.pages.concat(jsonResponse), page: prevState.page + 1 };
+        });
       } catch (err) {
         console.log(err);
       }
@@ -43,7 +45,9 @@ class App extends Component {
 
   handleBack = () => {
     if (this.state.pages[this.state.page - 1] !== undefined) {
-      this.setState({ page: this.state.page - 1 });
+      this.setState(prevState => {
+        return { page: prevState.page - 1 };
+      });
     }
   };
 
