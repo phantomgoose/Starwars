@@ -53,7 +53,7 @@ class App extends Component {
 
   render() {
     if (this.state.pages.length < 1) {
-      return <p>Loading...</p>;
+      return (<p>Loading...</p>);
     }
     const currentPage = this.state.pages[this.state.page];
     console.log(currentPage);
