@@ -62,8 +62,8 @@ class App extends Component {
         {currentPage.results.map(person => {
           return <Character key={person.name} name={person.name} birthday={person.birth_year} />;
         })}
-        <button onClick={this.handleBack}>Back</button>
-        <button onClick={this.handleNext}>Next</button>
+        <button type="button" onClick={this.handleBack}>Back</button>
+        <button type="button" onClick={this.handleNext}>Next</button>
       </div>
     );
   }
