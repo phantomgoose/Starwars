@@ -53,7 +53,7 @@ class App extends Component {
 
   render() {
     if (this.state.pages.length < 1) {
-      return <p>Loading...</p>;
+      return (<p>Loading...</p>);
     }
     const currentPage = this.state.pages[this.state.page];
     console.log(currentPage);
@@ -62,8 +62,8 @@ class App extends Component {
         {currentPage.results.map(person => {
           return <Character key={person.name} name={person.name} birthday={person.birth_year} />;
         })}
-        <button onClick={this.handleBack}>Back</button>
-        <button onClick={this.handleNext}>Next</button>
+        <button type="button" onClick={this.handleBack}>Back</button>
+        <button type="button" onClick={this.handleNext}>Next</button>
       </div>
     );
   }
